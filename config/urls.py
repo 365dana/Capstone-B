@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', include('accounts.signup_urls')),
@@ -25,3 +28,4 @@ urlpatterns = [
     path('posts/', include('board.urls')),
     path('calendar/', include('schedule.urls')),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

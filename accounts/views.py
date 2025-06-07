@@ -12,7 +12,7 @@ class SignupUserInfoView(APIView):
     def post(self, request):
         email = request.data.get("email")
 
-        if User.objects.filter(email=email).exists():
+        if user.objects.filter(email=email).exists():
             return Response({"error": "이미 가입된 이메일입니다."}, status=400)
 
         record = EmailVerification.objects.filter(email=email, is_verified=True).first()
