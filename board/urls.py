@@ -1,4 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from . import views
 from .views import (
     NoticePostListView,
     CommunityPostListView,
@@ -9,6 +11,10 @@ from .views import (
     CommentListCreateView,
     CommentDeleteView,
 )
+
+router = DefaultRouter()
+router.register('BoardPosts', views.PostViewSet)
+
 
 urlpatterns = [
     path('notice/', NoticePostListView.as_view(), name='noticepost-list'),
@@ -22,5 +28,7 @@ urlpatterns = [
 
     path('community/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list-create'),
     path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+
+    path('', include(router.urls)),
 ]
 

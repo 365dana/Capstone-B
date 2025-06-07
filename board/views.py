@@ -1,7 +1,13 @@
 from rest_framework import generics, permissions
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
+from schedule.models import CalendarEvent
 from .models import BoardPost, Comment
 from .serializers import BoardPostSerializer, CommentSerializer
+from rest_framework.viewsets import ModelViewSet
+
+class PostViewSet(ModelViewSet):
+    queryset = BoardPost.objects.all()
+    serializer_class = BoardPostSerializer
 
 class NoticePostListView(generics.ListAPIView):
     serializer_class = BoardPostSerializer
@@ -29,14 +35,14 @@ class NoticePostCreateView(generics.CreateAPIView):
 
         post = serializer.save(author=self.request.user, post_type='notice')
 
-        if post.event_start and post.event_end and post.event_location:
+        if post.event_start and post.event_end:
             CalendarEvent.objects.create(
                 post=post,
                 title=post.title,
                 location=post.event_location,
                 start=post.event_start,
                 end=post.event_end,
-                student_council = selected_council
+                student_council = post.author
             )
 
 

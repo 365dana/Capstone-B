@@ -21,12 +21,9 @@ class BoardPost(models.Model):
     def __str__(self):
         return f"[{self.get_post_type_display()}] {self.title}"
 
-def board_image_upload_path(instance, filename):
-    return f'board_post/{instance.post.id}/{filename}'
-
 class BoardPostImage(models.Model):
-    post = models.ForeignKey(BoardPost, on_delete=models.CASCADE, related_name='images')
-    board_image = models.ImageField(upload_to=board_image_upload_path)
+    post = models.ForeignKey(BoardPost, on_delete=models.CASCADE)
+    board_image = models.ImageField(upload_to="post/%Y/%m/%d")
 
     def __str__(self):
         return f"{self.post.title}의 이미지"
