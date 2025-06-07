@@ -16,11 +16,20 @@ class BoardPost(models.Model):
     event_end = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image_file = models.ImageField(null=True, upload_to="image_file/", blank=True)
+    #image_file = models.ImageField(null=True, upload_to="image_file/", blank=True)
 
     def __str__(self):
         return f"[{self.get_post_type_display()}] {self.title}"
 
+def board_image_upload_path(instance, filename):
+    return f'board_post/{instance.post.id}/{filename}'
+
+class BoardPostImage(models.Model):
+    post = models.ForeignKey(BoardPost, on_delete=models.CASCADE, related_name='images')
+    board_image = models.ImageField(upload_to=board_image_upload_path)
+
+    def __str__(self):
+        return f"{self.post.title}의 이미지"
 
 class Comment(models.Model):
     post = models.ForeignKey('BoardPost', on_delete=models.CASCADE, related_name='comments')

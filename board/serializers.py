@@ -17,8 +17,9 @@ class BoardPostSerializer(serializers.ModelSerializer):
             'author_name',
             'author_student_id',
             'author_major',
+            'image_file',
         ]
-        read_only_fields = ['created_at', 'updated_at', 'author_name', 'author_student_id', 'author_major']
+        read_only_fields = ['created_at', 'updated_at', 'author_name', 'author_student_id', 'author_major','board_image']
 
 
 class CommentSerializer(serializers.ModelSerializer):
